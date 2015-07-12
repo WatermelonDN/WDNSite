@@ -1,0 +1,35 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="site.css" />
+	<title>WDN - Home</title>
+</head>
+<body>
+    <div id="wrapper" class="container" ng-app="app">
+        <div class="row">
+        <div id="wrapper-header" class="col-md-12">
+            <a  href="home.html"><img id="logo" src="Images/Watermelon.png" alt="Logo" /></a> 
+            <div id="menu"><ul><li><a>Home</a></li><li><a>Projects</a></li></ul></div>
+        </div>
+        <div id="content" class="col-md-12" ng-controller="GreetingController" >
+  {{ greeting }}
+           <div ng-include src="'../HomeDetails.html'"></div>
+     </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <script>
+        var app = angular.module('app', []);
+
+        app.controller('GreetingController', ['$scope', function ($scope) {
+            $scope.greeting = 'Hola!';
+        }]);
+    </script>
+</body>
+</html>
