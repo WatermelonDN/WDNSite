@@ -16,6 +16,22 @@ a{
     background-color:white;
     height:86px;
 }
+.register{
+    float:right;
+}
+.register>a{
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.register .input-group-addon{
+    width:51px;
+}
+
+.register .input-group{
+    margin:2px;
+    width:100%;
+}
 #logo{
     max-height:86px;
 }
@@ -64,6 +80,6 @@ a{
     transition: color ease 0.2s;
 }
 
-#content{
+#content-container{
     background-color:white;
 }
