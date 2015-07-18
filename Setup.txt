@@ -1,0 +1,13 @@
+Initial Setup
+1. go to https://nodejs.org/download/
+2. Install
+3. Open command line
+4. Open folder with WDNSite
+5. Shift+Right click and open command line
+6. run command: npm install -g node-static
+
+Running the application
+1. Open folder with wdnsite
+2. Shift+Right click and open command line
+3. run command: static
+4. Open http://127.0.0.1:8080/Home.html in browser
