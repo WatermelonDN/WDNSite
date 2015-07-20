@@ -11,6 +11,17 @@
 
             $scope.register = function () {
                 $('#RegisterWindow').modal('hide');
+                $('#UserName').val('');
+                $('#Type').val('');
+                $('#Email').val('');
+                $('#Company').val('');
+                $('#FirstName').val('');
+                $('#LastName').val('');
+                $('#Month').val('');
+                $('#Day').val('');
+                $('#Year').val('');
+                $('#Location').val('');
+
                 $('#home').fadeOut();
                 $('.registration-employer, .registration-dev, #ValidateUserName').hide();
                 $('#UserName').removeClass('validation-error');
