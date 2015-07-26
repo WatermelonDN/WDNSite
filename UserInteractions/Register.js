@@ -1,6 +1,17 @@
 ﻿(function () {
     app.controller('Register', ['$scope', '$http',
         function ($scope, $http) {
+            (function () {
+                $('#Month').on('change', function () {
+                    $(this).blur();
+                    $('#Day').focus();
+                });
+                $('#Day').on('change', function () {
+                    $(this).blur();
+                    $('#Year').focus();
+                });
+            }());
+
             $scope.greeting = 'Hola!';
             $scope.IsAuthenticated = false;
 
@@ -22,7 +33,7 @@
                 $('#Year').val('');
                 $('#Location').val('');
 
-                $('#home').fadeOut();
+                $('#content-container>div').hide();
                 $('.registration-employer, .registration-dev, #ValidateUserName').hide();
                 $('#UserName').removeClass('validation-error');
                 $('#registration').fadeIn();
@@ -49,36 +60,45 @@
             }
             $scope.validateUserName = function (callback) {
                 $.ajax({
-                    url: 'http://localhost:3000/SecurityFacade/' + $('#UserName').val() + '/userExists',
+                    url: 'http://localhost:3000/Security/' + $('#UserName').val() + '/userExists',
                     success: function (data) {
                         callback(!data.result);
                     }
                 });
             }
             $scope.completeRegistration = function () {
-                var type = $('#Type').val();
-                var company = null;
-                if (type == 'Employer') {
-                    company = $('#Company').val();
-                }
-                $http.post('http://localhost:3000/SecurityFacade/InsertUser',
-                    {
-                        userName: $('#UserName').val(),
-                        type: type,
-                        email: $('#Email').val(),
-                        company: company,
-                        firstName: $('#FirstName').val(),
-                        lastName: $('#LastName').val(),
-                        dob: $('#Month').val() + '/' + $('#Day').val() + '/' + $('#Year').val(),
-                        location: $('#Location').val()
+                if ($scope.valid()) {
+                    var type = $('#Type').val();
+                    var user = null;
+                    if (type == 'Employer') {
+                        user = new SiteModel.Employer();
+                        user.company = $('#Company').val();
                     }
-                ).success(function(){
-                    $scope.login();
-                });
+                    else {
+                        user = new SiteModel.Developer();
+                    }
+                    user.userName = $('#UserName').val();
+                    user.type = type;
+                    user.email = $('#Email').val();
+                    user.firstName = $('#FirstName').val();
+                    user.lastName = $('#LastName').val();
+                    user.dob = $('#Month').val() + '/' + $('#Day').val() + '/' + $('#Year').val();
+                    user.location = $('#Location').val();
+
+                    $http.post('http://localhost:3000/Security/InsertUser',
+                        user
+                    ).success(function () {
+                        $scope.login();
+                    });
+                }
             };
             $('#UserName').on('change', function () {
                 $scope.validateUserName($scope.isUserNameValid);
             });
+            $scope.valid = function () {
+                if ($('#UserName').val() == '' || $('#UserName').hasClass('validation-error')) return false;
+                return true;
+            };
 
         }])
         .directive('myAccount', function () {

@@ -136,6 +136,18 @@ a{
     border-color:red;
 }
 
+#Category{
+    width:100%;
+}
+.category-container>span.select2{
+    width:100%!important;
+}
+
+.row-fields>div{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
 @media (max-width: 991px){
     .registration-employer label, .registration-dev label
     {
