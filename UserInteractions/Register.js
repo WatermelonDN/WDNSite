@@ -12,23 +12,67 @@
                 });
             }());
 
-            $scope.greeting = 'Hola!';
-            $scope.IsAuthenticated = false;
+            $scope.IsAuthenticated = function () {
+                return $('#UserId').val() != '';
+            };
+
+            $scope.loginCount = [];
+            $scope.checkLogin = function () {
+                var login = new Security.Login();
+                login.userName = $('#UserName').val();
+                login.password = $('#Password').val();
+                var found = false;
+                for (var i in $scope.loginCount) {
+                    if ($scope.loginCount[i].userName == login.userName && $scope.loginCount[i].count >= 3) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    $('#LoginValidation').fadeIn();
+                    $('#LoginValidation').text('Account locked out.');
+                }
+                else {
+                    $http.post('http://localhost:3000/Security/checkUser/', login)
+                    .success(function (user) {
+                        if (user == null) {
+                            var found = false;
+                            for (var i in $scope.loginCount) {
+                                if ($scope.loginCount[i].userName == login.userName) {
+                                    $scope.loginCount[i].count++;
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                $scope.loginCount.push({ userName: login.userName, count: 1 });
+                            }
+                            $('#LoginValidation').fadeIn();
+                            $('#LoginValidation').text('Invalid username or password.');
+                        }
+                        else {
+                            $('#LoginValidation').fadeOut();
+                            $scope.login(user.userID);
+                        }
+                    });
+                }
+            };
 
             $scope.login = function (userID) {
                 $http.get('http://localhost:3000/Security/user/' + userID)
                 .success(function (user) {
                     $('#registration').hide();
+                    $('#RegisterWindow').modal('hide');
                     $('#home').fadeIn();
-                    $('#UserID').val(userID);
+                    $('#UserId').val(userID);
                     $('#my-account').text(user.userName);
                 });                
             };
 
             $scope.register = function () {
                 $('#RegisterWindow').modal('hide');
-                $('#UserName').val('');
-                $('NewPassword').val('');
+                $('#NewUserName').val('');
+                $('#NewPassword').val('');
                 $('#Type').val('');
                 $('#Email').val('');
                 $('#Company').val('');
@@ -41,7 +85,7 @@
 
                 $('#content-container>div').hide();
                 $('.registration-employer, .registration-dev, #ValidateUserName').hide();
-                $('#UserName').removeClass('validation-error');
+                $('#NewUserName').removeClass('validation-error');
                 $('#registration').fadeIn();
                 $('#userTypeSelector').fadeIn();
             };
@@ -56,17 +100,17 @@
             $scope.isUserNameValid = function (valid) {
                 if (valid) {
                     $('#ValidateUserName').fadeOut();
-                    $('#UserName').removeClass('validation-error');
+                    $('#NewUserName').removeClass('validation-error');
 
                 }
                 else {
                     $('#ValidateUserName').fadeIn();
-                    $('#UserName').addClass('validation-error');
+                    $('#NewUserName').addClass('validation-error');
                 }
             }
             $scope.validateUserName = function (callback) {
                 $.ajax({
-                    url: 'http://localhost:3000/Security/' + $('#UserName').val() + '/userExists',
+                    url: 'http://localhost:3000/Security/' + $('#NewUserName').val() + '/userExists',
                     success: function (data) {
                         callback(!data.result);
                     }
@@ -83,27 +127,26 @@
                     else {
                         user = new SiteModel.Developer();
                     }
-                    user.userName = $('#UserName').val();
-                    user.password = $('NewPassword').val();
+                    user.userName = $('#NewUserName').val();
                     user.type = type;
                     user.email = $('#Email').val();
                     user.firstName = $('#FirstName').val();
                     user.lastName = $('#LastName').val();
                     user.dob = $('#Month').val() + '/' + $('#Day').val() + '/' + $('#Year').val();
                     user.location = $('#Location').val();
+                    user.password = $('#NewPassword').val();
 
-                    $http.post('http://localhost:3000/Security/InsertUser',
-                        user
-                    ).success(function (result) {
+                    $http.post('http://localhost:3000/Security/InsertUser', user)
+                        .success(function (result) {
                         $scope.login(result.userID);
                     });
                 }
             };
-            $('#UserName').on('change', function () {
+            $('#NewUserName').on('change', function () {
                 $scope.validateUserName($scope.isUserNameValid);
             });
             $scope.valid = function () {
-                if ($('#UserName').val() == '' || $('#UserName').hasClass('validation-error')) return false;
+                if ($('#NewUserName').val() == '' || $('#NewUserName').hasClass('validation-error')) return false;
                 return true;
             };
 
@@ -113,7 +156,10 @@
                 template: 'Login',
                 link: function ($scope, element) {
                     element.click(function () {
-                        if (!$scope.IsAuthenticated) {
+                        if (!$scope.IsAuthenticated()) {
+                            $('#UserName').val('');
+                            $('#Password').val('');
+                            $('#LoginValidation').hide();
                             $('#RegisterWindow').modal();
                             $('#RegisterWindow').modal('show');
                         }

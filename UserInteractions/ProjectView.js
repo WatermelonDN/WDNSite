@@ -23,19 +23,17 @@
 
         $scope.completeNewProject = function () {
             var project = new SiteModel.Project();
-                console.log(result.newId);
-                project.employerID = $('#UserId').val();
-                project.projectName = $('#ProjectName').val();
-                project.projectDescription = $('#ProjectDescription').val();
-                project.category = $('#Category').val();
-                $http.post('http://localhost:3000/Project/insert', project)
-                .success(function () {
-                    $('#ProjectWindow').modal('hide');
-                    $('#content-container>div').hide();
-                    $('#home').fadeIn();
-                });
-        };
-
+            project.employerID = $('#UserId').val();
+            project.projectName = $('#ProjectName').val();
+            project.projectDescription = $('#ProjectDescription').val();
+            project.category = $('#Category').val();
+            $http.post('http://localhost:3000/Project/insert', project)
+            .success(function () {
+                $('#ProjectWindow').modal('hide');
+                $('#content-container>div').hide();
+                $('#home').fadeIn();
+            });
+        }
     }])
        .directive('newProject', function () {
            return {

@@ -148,6 +148,10 @@ a{
     margin-bottom:5px;
 }
 
+#LoginValidation{
+    color:red;
+}
+
 @media (max-width: 991px){
     .registration-employer label, .registration-dev label
     {

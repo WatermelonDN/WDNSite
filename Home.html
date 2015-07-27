@@ -34,22 +34,23 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group input-group-lg">
-                                                <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-user"></i></span>
-                                                <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon1">
+                                                <span class="input-group-addon" id="UserName-addon"><i class="fa fa-user"></i></span>
+                                                <input id="UserName" type="text" class="form-control" placeholder="Username" aria-describedby="UserName-addon">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="input-group input-group-lg">
-                                                <span class="input-group-addon" id="sizing-addon2"><i class="fa fa-key"></i></span>
-                                                <input type="password" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
+                                                <span class="input-group-addon" id="Password-addon"><i class="fa fa-key"></i></span>
+                                                <input id="Password" type="password" class="form-control" placeholder="Password" aria-describedby="Password-addon">
                                             </div>
                                         </div>
+                                        <div class="col-md-12" id="LoginValidation"></div>
                                         <div class="col-md-12"><button class="btn btn-info" ng-click="register()"><i class="fa fa-user-plus"></i> Register</button></div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" ng-click="login">Login</button>
+                                    <button type="button" class="btn btn-primary" ng-click="checkLogin()">Login</button>
                                 </div>
                             </div>
                         </div>
