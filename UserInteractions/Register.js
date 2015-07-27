@@ -65,7 +65,34 @@
                     $('#RegisterWindow').modal('hide');
                     $('#home').fadeIn();
                     $('#UserId').val(userID);
+                    $('#UserType').val(user.type);
                     $('#my-account').text(user.userName);
+                    if (user.type == 'Employer') {
+                        $('#btnNewProject').show();
+                    }
+                    else {
+                        $('.btn-interested').each(function (i) {
+                            var data = $(this).attr('data-interested');
+                            var found = false;
+                            if (data.indexOf(',') > -1) {
+                                var inteested = data.split(',');
+                                for (var i in interested) {
+                                    if (parseInt(interested[i]) == userID) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (data != '') {
+                                if (parseInt(data) == userID) {
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                $('.btn-interested').fadeIn();
+                            }
+                        });
+                    }
                 });                
             };
 

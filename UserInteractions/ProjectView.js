@@ -21,17 +21,36 @@
             $('#Category').val('').trigger('change');
         }
 
+        $scope.getAllProjects = function () {
+            $('#ProjectList>tr.tr-content').remove();
+            $http.get('http://localhost:3000/Project/all')
+            .success(function (projects) {
+                for (var i in projects) {
+                    var categories = '';
+                    for (var x in projects[i].category) {
+                        categories += '&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-tag"></i>&nbsp;' + projects[i].category[x];
+                    }
+                    var interested = '';
+                    for (var x in projects[i].developersInterested) {
+                        interested += (x > 0 ? ',' : '') + projects[i].developersInterested[x];
+                    }
+                    $('<tr class="tr-content"><td>' + projects[i].projectName + '</td><td>' + projects[i].projectDescription + '</td><td>' + categories + '</td><td><button class="btn btn-primary btn-interested" data-interested="' + interested + '" data-id="' + projects[i].projectID + '" style="display:none;"><i class="fa fa-thumbs-o-up"></i> Interested?</button></td></tr>').appendTo($('#ProjectList>tbody'));
+                }
+            });
+        };
+
+        $scope.getAllProjects();
+
         $scope.completeNewProject = function () {
             var project = new SiteModel.Project();
-            project.employerID = $('#UserId').val();
+            project.employerID = parseInt($('#UserId').val());
             project.projectName = $('#ProjectName').val();
             project.projectDescription = $('#ProjectDescription').val();
             project.category = $('#Category').val();
             $http.post('http://localhost:3000/Project/insert', project)
             .success(function () {
                 $('#ProjectWindow').modal('hide');
-                $('#content-container>div').hide();
-                $('#home').fadeIn();
+                $scope.getAllProjects();
             });
         }
     }])

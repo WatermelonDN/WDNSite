@@ -1,6 +1,24 @@
 ﻿<div ng-controller="ProjectView">
-    test
-    <button id="btnNewProject" class="btn btn-primary" new-project>New Project <i class="fa fa-plus-circle"></i></button>
+
+    <div class="page-header">Projects</div>
+
+    <button id="btnNewProject" class="btn btn-primary" style="display: none;" new-project>New Project <i class="fa fa-plus-circle"></i></button>
+
+    <table id="ProjectList" class="table table-striped">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Categories
+            </th>
+            <th></th>
+        </tr>
+    </table>
+
     <div id="ProjectWindow" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
