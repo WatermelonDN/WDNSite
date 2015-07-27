@@ -15,14 +15,20 @@
             $scope.greeting = 'Hola!';
             $scope.IsAuthenticated = false;
 
-            $scope.login = function () {
-                $('#registration').hide();
-                $('#home').fadeIn();
+            $scope.login = function (userID) {
+                $http.get('http://localhost:3000/Security/user/' + userID)
+                .success(function (user) {
+                    $('#registration').hide();
+                    $('#home').fadeIn();
+                    $('#UserID').val(userID);
+                    $('#my-account').text(user.userName);
+                });                
             };
 
             $scope.register = function () {
                 $('#RegisterWindow').modal('hide');
                 $('#UserName').val('');
+                $('NewPassword').val('');
                 $('#Type').val('');
                 $('#Email').val('');
                 $('#Company').val('');
@@ -78,6 +84,7 @@
                         user = new SiteModel.Developer();
                     }
                     user.userName = $('#UserName').val();
+                    user.password = $('NewPassword').val();
                     user.type = type;
                     user.email = $('#Email').val();
                     user.firstName = $('#FirstName').val();
@@ -87,8 +94,8 @@
 
                     $http.post('http://localhost:3000/Security/InsertUser',
                         user
-                    ).success(function () {
-                        $scope.login();
+                    ).success(function (result) {
+                        $scope.login(result.userID);
                     });
                 }
             };
