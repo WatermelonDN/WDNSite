@@ -60,9 +60,9 @@
             <div id="content-container" class="col-md-12">
                 <input type="hidden" id="UserId" />
                 <input type="hidden" id="UserType" />
-                <div class="col-md-12" id="Home" ng-include src="'../HomeDetails.html'"></div>
-                <div class="col-md-12" id="registration" style="display:none" ng-include src="'../Registration.html'"></div>
-                <div class="col-md-12" id="Projects" style="display:none" ng-include src="'../Projects.html'"></div>
+                <div class="col-md-12 content-section" id="Home" ng-include src="'../HomeDetails.html'"></div>
+                <div class="col-md-12 content-section" id="registration" style="display:none" ng-include src="'../Registration.html'"></div>
+                <div class="col-md-12 content-section" id="Projects" style="display:none" ng-include src="'../Projects.html'"></div>
             </div>
         </div>
     </div>
@@ -80,8 +80,23 @@
                 e.stopPropagation();
                 $('#content-container>div').hide();
                 document.location.hash = $(this).text();
-                $('#' + $(this).text()).fadeIn();
+                $('#' + $(this).text()+'.content-section').fadeIn();
             });
+            if (document.location.hash != '') {
+                $('#content-container>div').hide();
+                var path = document.location.hash;
+                if (path.indexOf('#/') == 0) {
+                    path = path.substring(2);
+                    if ($('#' + path + '.content-section').length == 0) {
+                        setTimeout(function () {
+                            $('#' + path + '.content-section').fadeIn();
+                        }, 1000);
+                    }
+                    else {
+                        $('#' + path + '.content-section').fadeIn();
+                    }
+                }
+            }
         });
     </script>
     <script type="text/javascript" src="http://127.0.0.1:3000/models.js"></script>

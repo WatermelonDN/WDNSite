@@ -89,7 +89,10 @@
                                 }
                             }
                             if (!found) {
-                                $('.btn-interested').fadeIn();
+                                $(this).fadeIn();
+                            }
+                            else {
+                                $(this).parent().find('span').fadeIn();
                             }
                         });
                     }
@@ -189,6 +192,7 @@
                             $('#LoginValidation').hide();
                             $('#RegisterWindow').modal();
                             $('#RegisterWindow').modal('show');
+                            $('#UserName').focus();
                         }
                     });
                 }
