@@ -34,10 +34,30 @@
                     for (var x in projects[i].developersInterested) {
                         interested += (x > 0 ? ',' : '') + projects[i].developersInterested[x];
                     }
-                    $('<tr class="tr-content"><td>' + projects[i].projectName + '</td><td>' + projects[i].projectDescription + '</td><td>' + categories + '</td><td><button class="btn btn-primary btn-interested" data-interested="' + interested + '" data-id="' + projects[i].projectID + '" style="display:none;"><i class="fa fa-thumbs-o-up"></i> Interested?</button><span style="display:none;"><i class="fa fa-thumbs-up"></i> Interested</span></td></tr>').appendTo($('#ProjectList>tbody'));
+                    $('<tr class="tr-content"><td class="select-project" data-id="' + projects[i].projectID + '">' + projects[i].projectName + '</td><td>' + projects[i].projectDescription + '</td><td>' + categories + '</td><td><button class="btn btn-primary btn-interested" data-interested="' + interested + '" data-id="' + projects[i].projectID + '" style="display:none;"><i class="fa fa-thumbs-o-up"></i> Interested?</button><span style="display:none;"><i class="fa fa-thumbs-up"></i> Interested</span></td></tr>').appendTo($('#ProjectList>tbody'));
                 }
                 $('.btn-interested').on('click', function () {
                     $scope.showInterest($(this));
+                });
+                $('.select-project').on('click', function () {
+                    var id = $(this).attr('data-id');
+                    $('#ProjectList').hide();
+                    $('#ProjectDetails').fadeIn();
+                    $('.page-header').text($(this).text());
+                    $http.get('http://localhost:3000/Project/' + id + '/Details')
+                    .success(function (project) {
+                        $('#ProjectDetails>.well').text(project.projectDescription);
+                        $('#interestedDevs>li').remove();
+                        $('#interestedDevs').hide();
+                        $http
+                        for (var i in project.developersInterested) {
+                            $http.get('http://localhost:3000/Security/user/' + project.developersInterested[i])
+                            .success(function (user) {
+                                $('<li>' + user.userName + '</li>').appendTo($('#interestedDevs'));
+                                $('#interestedDevs').fadeIn();
+                            });
+                        }
+                    });
                 });
             });
         };
@@ -65,6 +85,7 @@
             $http.post('http://localhost:3000/Project/insert', project)
             .success(function () {
                 $('#ProjectWindow').modal('hide');
+                $('.tr-content').remove();
                 $scope.getAllProjects();
             });
         }

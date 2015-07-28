@@ -80,7 +80,12 @@
                 e.stopPropagation();
                 $('#content-container>div').hide();
                 document.location.hash = $(this).text();
-                $('#' + $(this).text()+'.content-section').fadeIn();
+                $('#' + $(this).text() + '.content-section').fadeIn();
+                if ($(this).text() == 'Projects') {
+                    $('#ProjectDetails').hide();
+                    $('#ProjectList').fadeIn();
+                    $('.page-header').text('Projects');
+                }
             });
             if (document.location.hash != '') {
                 $('#content-container>div').hide();

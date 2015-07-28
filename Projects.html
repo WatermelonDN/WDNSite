@@ -1,7 +1,7 @@
 ﻿<div ng-controller="ProjectView">
 
     <div class="page-header">Projects</div>
-    <div class="tr-content">
+    <div class="container-content">
     <button id="btnNewProject" class="btn btn-primary" style="display: none;" new-project>New Project <i class="fa fa-plus-circle"></i></button>
 
     <table id="ProjectList" class="table table-striped">
@@ -18,6 +18,11 @@
             <th></th>
         </tr>
     </table>
+    <div id="ProjectDetails" style="display:none;">
+        <div class="well"></div>
+        <h2><i class="fa fa-thumbs-up"></i> Interested Teams</h2>
+        <ul id="interestedDevs"></ul>
+    </div>
     </div>
     <div id="ProjectWindow" class="modal fade">
         <div class="modal-dialog">

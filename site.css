@@ -124,7 +124,7 @@ a{
     padding-right:15px;
 }
 
-.tr-content{
+.tr-content,.container-content{
     margin-left:15px;
     margin-right:15px;
 }
@@ -172,6 +172,15 @@ a{
 
 #btnNewProject{
     margin-bottom:20px;
+}
+
+.select-project:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+#interestedDevs{
+    list-style:none;
 }
 
 @media (max-width: 991px){
